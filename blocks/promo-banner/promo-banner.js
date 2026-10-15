@@ -1,20 +1,25 @@
 export default function decorate(block) {
   const rows = [...block.children];
 
-  const heading = document.createElement('h2');
-  heading.className = 'promo-heading';
-  heading.textContent = rows[1]?.textContent.trim() || 'Welcome to Our Website';
+  rows.forEach((row) => {
+    const cells = [...row.children];
 
-  const description = document.createElement('p');
-  description.className = 'promo-description';
-  description.textContent = rows[2]?.textContent.trim()
-    || 'Discover our latest products and services.';
+    cells.forEach((cell) => {
+      const heading = cell.querySelector('h1, h2, h3, h4, h5, h6');
+      if (heading) {
+        heading.classList.add('promo-heading');
+      }
 
-  const button = document.createElement('a');
-  button.className = 'promo-button';
-  button.textContent = rows[3]?.textContent.trim() || 'Explore Now';
-  button.href = '/products';
+      const paragraph = cell.querySelector('p');
+      if (paragraph) {
+        paragraph.classList.add('promo-description');
+      }
 
-  block.replaceChildren(heading, description, button);
+      cell.querySelectorAll('a').forEach((link) => {
+        link.classList.add('promo-button');
+      });
+    });
+  });
+
   block.classList.add('promo-banner');
 }
